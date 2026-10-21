@@ -1,0 +1,14 @@
+{
+  "_comment": "Example per-key profile for: msikb set --map examples/colors.json --commit",
+  "default": "000000",
+  "esc": "ff0000",
+  "f1": "ff8000",
+  "f2": "ff8000",
+  "f3": "ff8000",
+  "f4": "ff8000",
+  "arrows": "00aaff",
+  "w": "00ff00",
+  "a": "00ff00",
+  "s": "00ff00",
+  "d": "00ff00"
+}

@@ -1,0 +1,16 @@
+# MSI SteelSeries per-key RGB keyboard controllers (SteelSeries KLC / KLC2).
+#
+#   sudo install -m 0644 udev/99-msi-steelseries-rgb.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+#
+# TAG+="uaccess" lets the locally logged-in user open the node without sudo.
+# The GROUP/MODE fallback covers sessions where systemd-logind is not running
+# (add your user to the group named below, e.g. `sudo usermod -aG plugdev $USER`).
+
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="113a", MODE="0660", GROUP="plugdev", TAG+="uaccess"
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="1122", MODE="0660", GROUP="plugdev", TAG+="uaccess"
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="113c", MODE="0660", GROUP="plugdev", TAG+="uaccess"
+
+# Same devices when they show up as a plain USB interface (libusb backend).
+SUBSYSTEM=="usb", ATTR{idVendor}=="1038", ATTR{idProduct}=="113a", MODE="0660", GROUP="plugdev", TAG+="uaccess"
+SUBSYSTEM=="usb", ATTR{idVendor}=="1038", ATTR{idProduct}=="1122", MODE="0660", GROUP="plugdev", TAG+="uaccess"

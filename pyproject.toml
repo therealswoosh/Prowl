@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "msikb"
+version = "0.1.0"
+description = "Reverse-engineered control of MSI SteelSeries per-key RGB keyboards from Linux"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+keywords = ["msi", "steelseries", "rgb", "keyboard", "gp66", "hidraw", "reverse-engineering"]
+dependencies = []
+
+[project.optional-dependencies]
+usb = ["pyusb>=1.2"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+msikb = "msikb.cli:main"
+
+[tool.setuptools]
+packages = ["msikb"]
+# Keymaps are looked up in ../data/keymaps at runtime, so an editable install or a
+# plain checkout (what scripts/msikb-apply assumes) both work without extra data files.

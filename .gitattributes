@@ -1,0 +1,17 @@
+# Normalise line endings in the repository. Without this, committing from Windows
+# with core.autocrlf can store CRLF and every script here arrives on Linux with
+# `bad interpreter: /bin/sh^M`.
+* text=auto
+
+# Linux-side executables and config: always LF
+*.sh text eol=lf
+scripts/* text eol=lf
+*.rules text eol=lf
+*.service text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+
+# Windows-side helper keeps its native endings
+*.ps1 text eol=crlf

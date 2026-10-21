@@ -1,0 +1,39 @@
+#!/bin/sh
+# Re-apply the keyboard lighting. Called by msikb-lighting.service and
+# msikb-lighting-resume.service, and safe to run by hand.
+#
+# Environment:
+#   MSIKB_KEYMAP  keymap name or path          (default: gp66-leopard)
+#   MSIKB_CONFIG  JSON file {key: RRGGBB}      (takes priority over MSIKB_COLOR;
+#                 default ~/.config/msikb/colors.json, or /etc/msikb/colors.json
+#                 when run as root, which is what scripts/install.sh configures)
+#   MSIKB_COLOR   flat colour for all keys     (default: ff0000)
+#   MSIKB_ARGS    extra arguments appended verbatim
+#
+# Examples:
+#   MSIKB_COLOR=00ff00 /usr/local/bin/msikb-apply
+#   MSIKB_CONFIG=$HOME/.config/msikb/colors.json /usr/local/bin/msikb-apply
+set -eu
+
+MSIKB_KEYMAP="${MSIKB_KEYMAP:-gp66-leopard}"
+# systemd runs us as root, where $HOME/.config is not the user's profile.
+if [ "$(id -u)" -eq 0 ] && [ -f /etc/msikb/colors.json ]; then
+    default_profile=/etc/msikb/colors.json
+else
+    default_profile=$HOME/.config/msikb/colors.json
+fi
+MSIKB_CONFIG="${MSIKB_CONFIG:-$default_profile}"
+MSIKB_COLOR="${MSIKB_COLOR:-ff0000}"
+
+# Work from the repository root so `python3 -m msikb` resolves.
+MSIKB_ROOT="${MSIKB_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
+PYTHON="${MSIKB_PYTHON:-python3}"
+
+set -- set --keymap "$MSIKB_KEYMAP" --commit
+if [ -f "$MSIKB_CONFIG" ]; then
+    set -- "$@" --map "$MSIKB_CONFIG"
+else
+    set -- "$@" --color "$MSIKB_COLOR"
+fi
+# shellcheck disable=SC2086
+exec env PYTHONPATH="$MSIKB_ROOT${PYTHONPATH:+:$PYTHONPATH}" "$PYTHON" -m msikb "$@" ${MSIKB_ARGS:-}

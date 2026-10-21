@@ -1,0 +1,16 @@
+[Unit]
+Description=Apply colour profile to the MSI SteelSeries keyboard
+Documentation=https://github.com/Askannz/msi-perkeyrgb
+After=multi-user.target systemd-udev-settle.service
+Wants=systemd-udev-settle.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+# msikb-apply honours MSIKB_KEYMAP, MSIKB_COLOR and MSIKB_CONFIG (see scripts/msikb-apply)
+ExecStart=/usr/local/bin/msikb-apply
+# The keyboard controller needs a moment after the USB stack settles.
+ExecStartPre=/bin/sleep 3
+
+[Install]
+WantedBy=multi-user.target

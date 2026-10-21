@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+dist/
+build/
+*.egg-info/
+
+# local diagnostics and captures (contain machine/hardware details)
+msikb-diagnose.txt
+*.pcap
+*.pcapng
+*.tsv
+captures/
